@@ -1,10 +1,10 @@
 <template>
   <div class="componentPage">
     <router-link href="" to="/coolMessagePage" class="componentPage-btn">
-      <sapn>Go to coolMessagePage</sapn>
+      <span>Go to coolMessagePage</span>
     </router-link>
     <router-link href="" to="/noFound" class="componentPage-btn">
-      <sapn>Go to noFound</sapn>
+      <span>Go to noFound</span>
     </router-link>
   </div>
 </template>
