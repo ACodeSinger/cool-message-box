@@ -21,7 +21,6 @@ export default {
         confirmButtonText: 'OK',
         callback() {
           console.log('callback from cool message page!');
-          console.log(this);
           this.$alert({
             title: '支付成功后',
             message: '哈哈！你被骗了！',
