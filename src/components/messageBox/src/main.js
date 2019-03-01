@@ -6,23 +6,21 @@ const MessageBoxConstructor = Vue.extend(msgBoxVue);
 
 let instance;
 
-const initInstance = () => {
+function initInstance() {
   instance = new MessageBoxConstructor({
     el: document.createElement('div'),
   });
-};
+}
 
-const MessageBox = function (options) {
+const MessageBox = function MessageBox(options) {
   if (!instance) {
     initInstance();
   }
 
   if (!instance.visible) {
-    for (const prop in options) {
-      if (options.hasOwnProperty(prop)) {
-        instance[prop] = options[prop];
-      }
-    }
+    Object.keys(options).forEach((prop) => {
+      instance[prop] = options[prop];
+    });
 
     document.body.appendChild(instance.$el);
 
@@ -31,6 +29,8 @@ const MessageBox = function (options) {
     });
   }
 };
+
+
 
 MessageBox.alert = (title, message, others = {}) => {
   let options = MessageBox.alert.config || {};
@@ -49,4 +49,3 @@ MessageBox.alert = (title, message, others = {}) => {
 };
 
 export default MessageBox;
-export { MessageBox };

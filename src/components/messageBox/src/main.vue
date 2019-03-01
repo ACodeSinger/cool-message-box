@@ -35,6 +35,9 @@ export default {
     confirmButtonTextColor: {
       type: String,
     },
+    callback: {
+      type: Function,
+    },
   },
   computed: {
     confirmButtonStyle() {
@@ -52,6 +55,9 @@ export default {
   },
   methods: {
     hideDialog() {
+      if (typeof this.callback === 'function') {
+        this.callback();
+      }
       this.visible = false;
     },
   },
