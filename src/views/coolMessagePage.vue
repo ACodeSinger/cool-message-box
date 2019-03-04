@@ -1,8 +1,11 @@
 <template>
   <div class="coolMessagePage">
     <nav-Bar>Cool Message Page</nav-Bar>
-    <a class="coolMessagePage-btn" href="javascript:void(0);" @click="messageEvent">
+    <a class="coolMessagePage-btn" href="javascript:void(0);" @click="messageAlertEvent">
       Message Alert Button
+    </a>
+    <a class="coolMessagePage-btn" href="javascript:void(0);" @click="messageConfirmEvent">
+      Message Confirm Button
     </a>
   </div>
 </template>
@@ -21,7 +24,7 @@ export default {
     navBar,
   },
   methods: {
-    messageEvent() {
+    messageAlertEvent() {
       this.$alert('支付成功', '恭喜你！你已经成为我们的VIP客户！至尊享受，让你流连忘返！', {
         confirmButtonText: 'OK',
         callback: () => {
@@ -34,6 +37,22 @@ export default {
 
       this.$alert('PAY SUCCESSFULLY TWICE', 'You changed the this scope!');
     },
+    messageConfirmEvent() {
+      this.$confirm('支付失败', '账户余额不足，请去充值分享币', {
+        cancelButtonText: '不取消',
+        confirmButtonText: '去充值',
+        callback: (done) => {
+          done();
+          this.$alert('支付成功', '你已经成为我们的VIP客户', {
+            confirmButtonText: '好的！',
+          });
+        },
+      });
+    },
+  },
+  created() {
+    // this.messageAlertEvent();
+    this.messageConfirmEvent();
   },
 };
 </script>

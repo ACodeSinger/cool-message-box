@@ -9,6 +9,7 @@ const msgQueue = [];
 const defaultConfig = {
   title: '',
   message: '',
+  cancelButtonText: '取消',
   confirmButtonText: '知道了',
   confirmButtonTextColor: '',
   callback: null,
@@ -29,9 +30,11 @@ const showNextMsg = () => {
       });
 
       const oldCb = instance.callback;
-      instance.callback = () => {
+      instance.callback = (done) => {
         if (typeof oldCb === 'function') {
-          oldCb();
+          oldCb(done);
+        } else {
+          done();
         }
         showNextMsg();
       };
@@ -52,18 +55,41 @@ const MessageBox = function MessageBox(options) {
 };
 
 MessageBox.alert = (title, message, others = {}) => {
-  let options = MessageBox.alert.config || {};
+  let options;
   if (typeof title === 'object') {
     options = title;
   } else {
-    options = Object.assign(options, {
+    options = {
       title,
       message,
-    });
+    };
     if (JSON.stringify(others) !== '{}') {
       options = Object.assign({}, options, others);
     }
   }
+
+  options = Object.assign({}, MessageBox.alert.config, options, {
+    type: '$alert',
+  });
+  return MessageBox(options);
+};
+
+MessageBox.confirm = (title, message, others = {}) => {
+  let options;
+  if (typeof title === 'object') {
+    options = title;
+  } else {
+    options = {
+      title,
+      message,
+    };
+    if (JSON.stringify(others) !== '{}') {
+      options = Object.assign({}, options, others);
+    }
+  }
+  options = Object.assign({}, MessageBox.confirm.config, options, {
+    type: '$confirm',
+  });
   return MessageBox(options);
 };
 

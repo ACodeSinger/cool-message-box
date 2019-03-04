@@ -10,8 +10,13 @@
     <div class="messageBox-wrap">
       <div class="messageBox-header">{{title}}</div>
       <div class="messageBox-body">{{message}}</div>
-      <div class="messageBox-footer" @click="hideDialog" :style="confirmButtonStyle">
+      <div class="messageBox-footer" v-if="type==='$alert'" @click="confirmEvent"
+           :style="confirmButtonStyle">
         <span>{{confirmButtonText}}</span>
+      </div>
+      <div class="messageBox-footer" v-if="type==='$confirm'" :style="confirmButtonStyle">
+        <span class="messageBox-footer__cancel" @click="cancelEvent">{{cancelButtonText}}</span>
+        <span class="messageBox-footer__confirm" @click="confirmEvent">{{confirmButtonText}}</span>
       </div>
     </div>
   </div>
@@ -21,12 +26,14 @@
 export default {
   props: {
     title: {
-      require: true,
       type: String,
     },
     message: {
-      require: true,
       type: String,
+    },
+    cancelButtonText: {
+      type: String,
+      default: '取消',
     },
     confirmButtonText: {
       type: String,
@@ -37,6 +44,10 @@ export default {
     },
     callback: {
       type: Function,
+    },
+    type: { // 可能的值为：$alert, $confirm,
+      type: String,
+      default: '$alert',
     },
   },
   computed: {
@@ -57,9 +68,15 @@ export default {
   methods: {
     hideDialog() {
       this.visible = false;
+    },
+    cancelEvent() {
+      this.visible = false;
+    },
+    confirmEvent() {
+      const hideDialogEvent = this.hideDialog;
       if (typeof this.callback === 'function') {
         this.$nextTick(() => {
-          this.callback();
+          this.callback(hideDialogEvent);
         });
       }
     },
@@ -67,6 +84,8 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+  $black-color: #000;
+  $border-color: #E5E5E5;
   .messageBox {
     &-wrap {
       position: fixed;
@@ -77,12 +96,13 @@ export default {
       width: 280px;
       border-radius: 10px;
       background-color: #fff;
+      border-bottom: 1px solid #fff;
     }
     &-header {
       margin-top: 25px;
       line-height: 25px;
       text-align: center;
-      color: #000;
+      color: $black-color;
       font-size: 18px;
     }
     &-body {
@@ -99,7 +119,15 @@ export default {
       text-align: center;
       color: #B19663;
       font-size: 18px;
-      border-top: 1px solid #E5E5E5;
+      border-top: 1px solid $border-color;
+      &__cancel, &__confirm {
+        display: inline-block;
+        width: 50%;
+      }
+      &__cancel {
+        color: $black-color;
+        border-right: 1px solid $border-color;
+      }
     }
     &-mask {
       position: fixed;

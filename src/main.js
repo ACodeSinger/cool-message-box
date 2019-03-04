@@ -6,6 +6,8 @@ import MessageBox from './components/messageBox/index';
 Vue.config.productionTip = false;
 Vue.prototype.$alert = MessageBox.alert;
 Vue.prototype.$alert.config = {};
+Vue.prototype.$confirm = MessageBox.confirm;
+Vue.prototype.$confirm.config = {};
 
 new Vue({
   router,
