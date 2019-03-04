@@ -25,13 +25,14 @@ export default {
       this.$alert('支付成功', '恭喜你！你已经成为我们的VIP客户！至尊享受，让你流连忘返！', {
         confirmButtonText: 'OK',
         callback: () => {
-          this.$alert('PAY SUCCESSFULLY TWICE', 'You changed the this scope!', {
-            // confirmButtonText: 'TWICE BUTTON',
+          console.log(this.env);
+          this.$alert('PAY SUCCESSFULLY FROM CALLBACK', 'You changed the this scope!', {
+            confirmButtonText: 'TWICE BUTTON',
           });
         },
       });
 
-      // this.$alert('PAY SUCCESSFULLY TWICE', 'You changed the this scope!');
+      this.$alert('PAY SUCCESSFULLY TWICE', 'You changed the this scope!');
     },
   },
 };

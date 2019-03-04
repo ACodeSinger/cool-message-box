@@ -75,12 +75,11 @@ export default {
       transform: translate(-50%,-50%);
       z-index: 5000;
       width: 280px;
-      border-radius: 3px;
+      border-radius: 10px;
       background-color: #fff;
     }
     &-header {
       margin-top: 25px;
-      height: 25px;
       line-height: 25px;
       text-align: center;
       color: #000;

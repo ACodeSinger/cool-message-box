@@ -5,6 +5,7 @@ import msgBoxVue from './main.vue';
 const MessageBoxConstructor = Vue.extend(msgBoxVue);
 
 let instance;
+const msgQueue = [];
 const defaultConfig = {
   title: '',
   message: '',
@@ -19,24 +20,35 @@ function initInstance() {
   });
 }
 
+const showNextMsg = () => {
+  if (!instance.visible) {
+    if (msgQueue.length > 0) {
+      const currentMsg = msgQueue.shift();
+      Object.keys(currentMsg).forEach((prop) => {
+        instance[prop] = currentMsg[prop];
+      });
+
+      const oldCb = instance.callback;
+      instance.callback = () => {
+        if (typeof oldCb === 'function') {
+          oldCb();
+        }
+        showNextMsg();
+      };
+      document.body.appendChild(instance.$el);
+
+      instance.visible = true;
+    }
+  }
+};
+
 const MessageBox = function MessageBox(options) {
   if (!instance) {
     initInstance();
   }
-
   const latestOptions = Object.assign({}, defaultConfig, options);
-  if (!instance.visible) {
-    Object.keys(latestOptions).forEach((prop) => {
-      instance[prop] = latestOptions[prop];
-    });
-
-    document.body.appendChild(instance.$el);
-
-    Vue.nextTick(() => {
-      instance.visible = true;
-    });
-    // showNextMsg();
-  }
+  msgQueue.push(latestOptions);
+  showNextMsg();
 };
 
 MessageBox.alert = (title, message, others = {}) => {
