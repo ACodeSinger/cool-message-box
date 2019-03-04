@@ -5,6 +5,13 @@ import msgBoxVue from './main.vue';
 const MessageBoxConstructor = Vue.extend(msgBoxVue);
 
 let instance;
+const defaultConfig = {
+  title: '',
+  message: '',
+  confirmButtonText: '知道了',
+  confirmButtonTextColor: '',
+  callback: null,
+};
 
 function initInstance() {
   instance = new MessageBoxConstructor({
@@ -17,9 +24,10 @@ const MessageBox = function MessageBox(options) {
     initInstance();
   }
 
+  const latestOptions = Object.assign({}, defaultConfig, options);
   if (!instance.visible) {
-    Object.keys(options).forEach((prop) => {
-      instance[prop] = options[prop];
+    Object.keys(latestOptions).forEach((prop) => {
+      instance[prop] = latestOptions[prop];
     });
 
     document.body.appendChild(instance.$el);
@@ -27,10 +35,9 @@ const MessageBox = function MessageBox(options) {
     Vue.nextTick(() => {
       instance.visible = true;
     });
+    // showNextMsg();
   }
 };
-
-
 
 MessageBox.alert = (title, message, others = {}) => {
   let options = MessageBox.alert.config || {};
@@ -42,7 +49,7 @@ MessageBox.alert = (title, message, others = {}) => {
       message,
     });
     if (JSON.stringify(others) !== '{}') {
-      options = Object.assign(options, others);
+      options = Object.assign({}, options, others);
     }
   }
   return MessageBox(options);

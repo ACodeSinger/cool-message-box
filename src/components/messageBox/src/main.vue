@@ -51,14 +51,17 @@ export default {
   data() {
     return {
       visible: false,
+      env: 'MESSAGE BOX COMPONENT----',
     };
   },
   methods: {
     hideDialog() {
-      if (typeof this.callback === 'function') {
-        this.callback();
-      }
       this.visible = false;
+      if (typeof this.callback === 'function') {
+        this.$nextTick(() => {
+          this.callback();
+        });
+      }
     },
   },
 };

@@ -12,6 +12,11 @@ import navBar from '../components/navBar.vue';
 
 export default {
   name: 'coolMessagePage',
+  data() {
+    return {
+      env: '--------------COOL MESSAGE PAGE',
+    };
+  },
   components: {
     navBar,
   },
@@ -19,14 +24,14 @@ export default {
     messageEvent() {
       this.$alert('支付成功', '恭喜你！你已经成为我们的VIP客户！至尊享受，让你流连忘返！', {
         confirmButtonText: 'OK',
-        callback() {
-          console.log('callback from cool message page!');
-          this.$alert({
-            title: '支付成功后',
-            message: '哈哈！你被骗了！',
+        callback: () => {
+          this.$alert('PAY SUCCESSFULLY TWICE', 'You changed the this scope!', {
+            // confirmButtonText: 'TWICE BUTTON',
           });
         },
       });
+
+      // this.$alert('PAY SUCCESSFULLY TWICE', 'You changed the this scope!');
     },
   },
 };
