@@ -14,9 +14,11 @@
            :style="confirmButtonStyle">
         <span>{{confirmButtonText}}</span>
       </div>
-      <div class="messageBox-footer" v-if="type==='$confirm'" :style="confirmButtonStyle">
-        <span class="messageBox-footer__cancel" @click="cancelEvent">{{cancelButtonText}}</span>
-        <span class="messageBox-footer__confirm" @click="confirmEvent">{{confirmButtonText}}</span>
+      <div class="messageBox-footer" v-if="type==='$confirm'">
+        <span class="messageBox-footer__cancel" :style="cancelButtonStyle"
+              @click="cancelEvent">{{cancelButtonText}}</span>
+        <span class="messageBox-footer__confirm" :style="confirmButtonStyle"
+              @click="confirmEvent" >{{confirmButtonText}}</span>
       </div>
     </div>
   </div>
@@ -33,16 +35,17 @@ export default {
     },
     cancelButtonText: {
       type: String,
-      default: '取消',
+    },
+    cancelButtonTextColor: {
+      type: String,
     },
     confirmButtonText: {
       type: String,
-      default: '知道了',
     },
     confirmButtonTextColor: {
       type: String,
     },
-    callback: {
+    yes: {
       type: Function,
     },
     type: { // 可能的值为：$alert, $confirm,
@@ -51,6 +54,13 @@ export default {
     },
   },
   computed: {
+    cancelButtonStyle() {
+      const cancelButtonStyleConfig = {};
+      if (this.cancelButtonTextColor) {
+        cancelButtonStyleConfig.color = this.cancelButtonTextColor;
+      }
+      return cancelButtonStyleConfig;
+    },
     confirmButtonStyle() {
       const confirmButtonStyleConfig = {};
       if (this.confirmButtonTextColor) {
@@ -71,13 +81,23 @@ export default {
     },
     cancelEvent() {
       this.visible = false;
+      const hideDialogEvent = this.hideDialog;
+      if (typeof this.cancel === 'function') {
+        this.$nextTick(() => {
+          this.cancel(hideDialogEvent);
+        });
+      } else {
+        this.hideDialog();
+      }
     },
     confirmEvent() {
       const hideDialogEvent = this.hideDialog;
-      if (typeof this.callback === 'function') {
+      if (typeof this.yes === 'function') {
         this.$nextTick(() => {
-          this.callback(hideDialogEvent);
+          this.yes(hideDialogEvent);
         });
+      } else {
+        this.hideDialog();
       }
     },
   },

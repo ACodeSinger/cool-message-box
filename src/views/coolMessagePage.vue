@@ -25,34 +25,74 @@ export default {
   },
   methods: {
     messageAlertEvent() {
-      this.$alert('支付成功', '恭喜你！你已经成为我们的VIP客户！至尊享受，让你流连忘返！', {
-        confirmButtonText: 'OK',
-        callback: () => {
-          console.log(this.env);
-          this.$alert('PAY SUCCESSFULLY FROM CALLBACK', 'You changed the this scope!', {
-            confirmButtonText: 'TWICE BUTTON',
-          });
+      // this.$alert('标题1', '内容1'); // 样例1
+
+      // this.$alert({ // 样例2
+      //   title: '标题2',
+      //   message: '内容2',
+      // });
+
+      this.$alert('标题3', '内容3', {
+        confirmButtonText: 'NO PROBLEM',
+        confirmButtonTextColor: 'blue',
+        cancel: () => {
+          console.log('cancelCallback');
+        },
+        yes: (done) => {
+          console.log(`alert callback: ${this.env}`);
+          done();
         },
       });
 
-      this.$alert('PAY SUCCESSFULLY TWICE', 'You changed the this scope!');
+      // this.$alert({
+      //   title: '标题4',
+      //   message: '内容4',
+      //   confirmButtonText: 'OK',
+      //   confirmButtonTextColor: 'blue',
+      //   callback: (done) => {
+      //     console.log('alert callback');
+      //     this.$alert('支付成功', 'You are our VIP customer now!');
+      //     done();
+      //   },
+      // });
     },
     messageConfirmEvent() {
-      this.$confirm('支付失败', '账户余额不足，请去充值分享币', {
-        cancelButtonText: '不取消',
-        confirmButtonText: '去充值',
-        callback: (done) => {
+      // this.$confirm('标题1', '内容1');
+      // this.$confirm({
+      //   title: '标题2',
+      //   message: '内容2',
+      // });
+
+      this.$confirm('标题1', '内容1', {
+        cancelButtonText: 'Cancel',
+        cancelButtonTextColor: '#999',
+        confirmButtonText: 'OK',
+        confirmButtonTextColor: 'blue',
+        cancel: (done) => {
+          console.log('confirm cancel event');
           done();
-          this.$alert('支付成功', '你已经成为我们的VIP客户', {
-            confirmButtonText: '好的！',
-          });
+        },
+        yes: (done) => {
+          console.log('confirm yes event');
+          done();
         },
       });
+      // this.$alert('标题1', '内容1', {
+      //   confirmButtonText: 'NO PROBLEM',
+      //   confirmButtonTextColor: 'blue',
+      //   cancel: () => {
+      //     console.log('cancelCallback');
+      //   },
+      //   yes: (done) => {
+      //     console.log(`alert callback: ${this.env}`);
+      //     done();
+      //   },
+      // });
     },
   },
   created() {
     // this.messageAlertEvent();
-    this.messageConfirmEvent();
+    // this.messageConfirmEvent();
   },
 };
 </script>

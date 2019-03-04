@@ -12,7 +12,8 @@ const defaultConfig = {
   cancelButtonText: '取消',
   confirmButtonText: '知道了',
   confirmButtonTextColor: '',
-  callback: null,
+  cancel: null,
+  yes: null,
 };
 
 function initInstance() {
@@ -29,10 +30,19 @@ const showNextMsg = () => {
         instance[prop] = currentMsg[prop];
       });
 
-      const oldCb = instance.callback;
-      instance.callback = (done) => {
-        if (typeof oldCb === 'function') {
-          oldCb(done);
+      const oldYes = instance.yes;
+      instance.yes = (done) => {
+        if (typeof oldYes === 'function') {
+          oldYes(done);
+        } else {
+          done();
+        }
+        showNextMsg();
+      };
+      const oldCancel = instance.cancel;
+      instance.cancel = (done) => {
+        if (typeof oldCancel === 'function') {
+          oldCancel(done);
         } else {
           done();
         }
@@ -56,7 +66,7 @@ const MessageBox = function MessageBox(options) {
 
 MessageBox.alert = (title, message, others = {}) => {
   let options;
-  if (typeof title === 'object') {
+  if (typeof title === 'object' && title !== null) {
     options = title;
   } else {
     options = {

@@ -5,7 +5,10 @@ import MessageBox from './components/messageBox/index';
 
 Vue.config.productionTip = false;
 Vue.prototype.$alert = MessageBox.alert;
-Vue.prototype.$alert.config = {};
+Vue.prototype.$alert.config = {
+  confirmButtonText: '知道了',
+  confirmButtonTextColor: 'green',
+};
 Vue.prototype.$confirm = MessageBox.confirm;
 Vue.prototype.$confirm.config = {};
 
