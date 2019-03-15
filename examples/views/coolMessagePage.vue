@@ -33,13 +33,9 @@ export default {
       // });
 
       this.$alert('标题3', '内容3', {
-        confirmButtonText: 'NO PROBLEM',
-        confirmButtonTextColor: 'blue',
-        cancel: () => {
-          console.log('cancelCallback');
-        },
+        // confirmButtonText: 'NO PROBLEM',
+        // confirmButtonTextColor: 'blue',
         yes: (done) => {
-          console.log(`alert callback: ${this.env}`);
           done();
         },
       });
@@ -66,8 +62,8 @@ export default {
       this.$confirm('标题1', '内容1', {
         cancelButtonText: 'Cancel',
         cancelButtonTextColor: '#999',
-        confirmButtonText: 'OK',
-        confirmButtonTextColor: 'blue',
+        // confirmButtonText: 'OK',
+        // confirmButtonTextColor: 'blue',
         cancel: (done) => {
           console.log('confirm cancel event');
           done();

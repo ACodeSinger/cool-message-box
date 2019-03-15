@@ -1,11 +1,17 @@
 {
-  "name": "coolproject",
+  "name": "cool-message-box",
   "version": "0.1.0",
-  "private": true,
+  "description": "text message box based on vue.js",
+  "main": "lib/cool-message-box.umd.min.js",
+  "private": false,
+  "license": "MIT",
+  "author": "ACodeSinger",
   "scripts": {
     "serve": "vue-cli-service serve",
+    "serve:prod": "cross-env NODE_ENV=production && vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "lib": "cross-env NODE_ENV=production && rm -rf lib/ && vue-cli-service build --target lib --name coolMessageBox --dest lib packages/index.js"
   },
   "dependencies": {
     "vue": "^2.6.6",
@@ -17,6 +23,7 @@
     "@vue/cli-service": "^3.4.0",
     "@vue/eslint-config-airbnb": "^4.0.0",
     "babel-eslint": "^10.0.1",
+    "cross-env": "^5.2.0",
     "eslint": "^5.8.0",
     "eslint-plugin-vue": "^5.0.0",
     "node-sass": "^4.11.0",

@@ -9,6 +9,9 @@
 export default {
   name: 'app',
   components: {},
+  mounted() {
+    console.log(process.env.NODE_ENV);
+  },
 };
 </script>
 

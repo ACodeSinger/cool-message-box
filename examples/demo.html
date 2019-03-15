@@ -1,0 +1,28 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>coolMessageBox demo</title>
+  <link rel="stylesheet" href="../lib/coolMessageBox.css">
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.7/dist/vue.js"></script>
+  <script src="../lib/coolMessageBox.umd.js"></script>
+</head>
+<body>
+
+<script>
+  console.log(coolMessageBox.default);
+  const dialog = {
+    alert: coolMessageBox.default.alert,
+    confirm: coolMessageBox.default.confirm,
+  };
+  // dialog.alert('标题1', '内容1');
+  dialog.confirm('标题1', '内容1');
+</script>
+</body>
+</html>
+
+

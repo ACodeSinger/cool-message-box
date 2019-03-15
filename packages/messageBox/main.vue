@@ -26,6 +26,7 @@
 <script>
 
 export default {
+  name: 'coolMessageBox',
   props: {
     title: {
       type: String,
@@ -126,6 +127,7 @@ export default {
       font-size: 18px;
     }
     &-body {
+      box-sizing: border-box;
       width: 100%;
       padding: 9px 35px 12px;
       font-size: 15px;
@@ -134,6 +136,7 @@ export default {
       line-height: 24px;
     }
     &-footer {
+      box-sizing: border-box;
       height: 54px;
       line-height: 54px;
       text-align: center;
@@ -141,6 +144,7 @@ export default {
       font-size: 18px;
       border-top: 1px solid $border-color;
       &__cancel, &__confirm {
+        box-sizing: border-box;
         display: inline-block;
         width: 50%;
       }

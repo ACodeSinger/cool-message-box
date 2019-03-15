@@ -2,6 +2,7 @@
 import Vue from 'vue';
 import msgBoxVue from './main.vue';
 
+console.log(Vue);
 const MessageBoxConstructor = Vue.extend(msgBoxVue);
 
 let instance;
