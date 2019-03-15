@@ -10,8 +10,15 @@
     <div class="messageBox-wrap">
       <div class="messageBox-header">{{title}}</div>
       <div class="messageBox-body">{{message}}</div>
-      <div class="messageBox-footer" @click="hideDialog" :style="confirmButtonStyle">
+      <div class="messageBox-footer" v-if="type==='$alert'" @click="confirmEvent"
+           :style="confirmButtonStyle">
         <span>{{confirmButtonText}}</span>
+      </div>
+      <div class="messageBox-footer" v-if="type==='$confirm'">
+        <span class="messageBox-footer__cancel" :style="cancelButtonStyle"
+              @click="cancelEvent">{{cancelButtonText}}</span>
+        <span class="messageBox-footer__confirm" :style="confirmButtonStyle"
+              @click="confirmEvent" >{{confirmButtonText}}</span>
       </div>
     </div>
   </div>
@@ -19,27 +26,42 @@
 <script>
 
 export default {
+  name: 'coolMessageBox',
   props: {
     title: {
-      require: true,
       type: String,
     },
     message: {
-      require: true,
+      type: String,
+    },
+    cancelButtonText: {
+      type: String,
+    },
+    cancelButtonTextColor: {
       type: String,
     },
     confirmButtonText: {
       type: String,
-      default: '知道了',
     },
     confirmButtonTextColor: {
       type: String,
     },
-    callback: {
+    yes: {
       type: Function,
+    },
+    type: { // 可能的值为：$alert, $confirm,
+      type: String,
+      default: '$alert',
     },
   },
   computed: {
+    cancelButtonStyle() {
+      const cancelButtonStyleConfig = {};
+      if (this.cancelButtonTextColor) {
+        cancelButtonStyleConfig.color = this.cancelButtonTextColor;
+      }
+      return cancelButtonStyleConfig;
+    },
     confirmButtonStyle() {
       const confirmButtonStyleConfig = {};
       if (this.confirmButtonTextColor) {
@@ -57,16 +79,34 @@ export default {
   methods: {
     hideDialog() {
       this.visible = false;
-      if (typeof this.callback === 'function') {
+    },
+    cancelEvent() {
+      this.visible = false;
+      const hideDialogEvent = this.hideDialog;
+      if (typeof this.cancel === 'function') {
         this.$nextTick(() => {
-          this.callback();
+          this.cancel(hideDialogEvent);
         });
+      } else {
+        this.hideDialog();
+      }
+    },
+    confirmEvent() {
+      const hideDialogEvent = this.hideDialog;
+      if (typeof this.yes === 'function') {
+        this.$nextTick(() => {
+          this.yes(hideDialogEvent);
+        });
+      } else {
+        this.hideDialog();
       }
     },
   },
 };
 </script>
 <style lang="scss" scoped>
+  $black-color: #000;
+  $border-color: #E5E5E5;
   .messageBox {
     &-wrap {
       position: fixed;
@@ -77,15 +117,17 @@ export default {
       width: 280px;
       border-radius: 10px;
       background-color: #fff;
+      border-bottom: 1px solid #fff;
     }
     &-header {
       margin-top: 25px;
       line-height: 25px;
       text-align: center;
-      color: #000;
+      color: $black-color;
       font-size: 18px;
     }
     &-body {
+      box-sizing: border-box;
       width: 100%;
       padding: 9px 35px 12px;
       font-size: 15px;
@@ -94,12 +136,22 @@ export default {
       line-height: 24px;
     }
     &-footer {
+      box-sizing: border-box;
       height: 54px;
       line-height: 54px;
       text-align: center;
       color: #B19663;
       font-size: 18px;
-      border-top: 1px solid #E5E5E5;
+      border-top: 1px solid $border-color;
+      &__cancel, &__confirm {
+        box-sizing: border-box;
+        display: inline-block;
+        width: 50%;
+      }
+      &__cancel {
+        color: $black-color;
+        border-right: 1px solid $border-color;
+      }
     }
     &-mask {
       position: fixed;

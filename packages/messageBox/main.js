@@ -2,6 +2,7 @@
 import Vue from 'vue';
 import msgBoxVue from './main.vue';
 
+console.log(Vue);
 const MessageBoxConstructor = Vue.extend(msgBoxVue);
 
 let instance;
@@ -9,9 +10,11 @@ const msgQueue = [];
 const defaultConfig = {
   title: '',
   message: '',
+  cancelButtonText: '取消',
   confirmButtonText: '知道了',
   confirmButtonTextColor: '',
-  callback: null,
+  cancel: null,
+  yes: null,
 };
 
 function initInstance() {
@@ -28,10 +31,21 @@ const showNextMsg = () => {
         instance[prop] = currentMsg[prop];
       });
 
-      const oldCb = instance.callback;
-      instance.callback = () => {
-        if (typeof oldCb === 'function') {
-          oldCb();
+      const oldYes = instance.yes;
+      instance.yes = (done) => {
+        if (typeof oldYes === 'function') {
+          oldYes(done);
+        } else {
+          done();
+        }
+        showNextMsg();
+      };
+      const oldCancel = instance.cancel;
+      instance.cancel = (done) => {
+        if (typeof oldCancel === 'function') {
+          oldCancel(done);
+        } else {
+          done();
         }
         showNextMsg();
       };
@@ -52,18 +66,41 @@ const MessageBox = function MessageBox(options) {
 };
 
 MessageBox.alert = (title, message, others = {}) => {
-  let options = MessageBox.alert.config || {};
-  if (typeof title === 'object') {
+  let options;
+  if (typeof title === 'object' && title !== null) {
     options = title;
   } else {
-    options = Object.assign(options, {
+    options = {
       title,
       message,
-    });
+    };
     if (JSON.stringify(others) !== '{}') {
       options = Object.assign({}, options, others);
     }
   }
+
+  options = Object.assign({}, MessageBox.alert.config, options, {
+    type: '$alert',
+  });
+  return MessageBox(options);
+};
+
+MessageBox.confirm = (title, message, others = {}) => {
+  let options;
+  if (typeof title === 'object') {
+    options = title;
+  } else {
+    options = {
+      title,
+      message,
+    };
+    if (JSON.stringify(others) !== '{}') {
+      options = Object.assign({}, options, others);
+    }
+  }
+  options = Object.assign({}, MessageBox.confirm.config, options, {
+    type: '$confirm',
+  });
   return MessageBox(options);
 };
 
